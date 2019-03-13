@@ -2,32 +2,54 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {AppProvider,TextStyle, Avatar, Card, ResourceList} from '@shopify/polaris';
 
-export default class UserList extends Component {
+export default class UserList extends React.Component {
     constructor()
     {
         super();
         this.state={
             users:[],
-            loading:true
-        }
-
+            filtered:[],
+            loading:true,
+            searchValue:''
+        };
+        this.handleSearchChange = (searchValue) => {
+            this.setState({searchValue});
+            this.filter();
+          };
     }
+    filter () {
+        this.state.filtered=this.state.users.filter(
+            (user)=>{
+                return user.email.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !==-1 ||
+                    user.name.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !==-1 
+            }
+        );
+      };
     componentDidMount()
-    {
-        axios.get('/user')
-        .then(response=>{
-            this.state.loading=false
-            this.setState({users:response.data})
-            
-        });
-    }
+        {
+            axios.get('/user')
+            .then(response=>{
+                this.state.loading=false
+                this.setState({users:response.data})
+            });
+        }
     render() {
+            this.filter()
+
+            const filterControl = (
+            <ResourceList.FilterControl
+              searchValue={this.state.searchValue}
+              onSearchChange={this.handleSearchChange}
+            />
+          );
+      
         return (
             <AppProvider>
                 <Card>
                     <ResourceList
+                        filterControl={filterControl}
                         loading={this.state.loading}
-                        items={this.state.users}
+                        items={this.state.filtered}
                         renderItem={(item) => {
                         const {id, name, email} = item;
 

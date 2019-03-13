@@ -103660,8 +103660,8 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_5__["AppProvider"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_5__["Page"], {
-        singleColumn: true,
-        title: "USER LIST"
+        title: "USER LIST",
+        singleColumn: true
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_5__["Layout"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_5__["Layout"].Section, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_UserList__WEBPACK_IMPORTED_MODULE_4__["default"], null)))));
     }
   }]);
@@ -103716,8 +103716,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var UserList =
 /*#__PURE__*/
-function (_Component) {
-  _inherits(UserList, _Component);
+function (_React$Component) {
+  _inherits(UserList, _React$Component);
 
   function UserList() {
     var _this;
@@ -103727,20 +103727,40 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(UserList).call(this));
     _this.state = {
       users: [],
-      loading: true
+      filtered: [],
+      loading: true,
+      searchValue: ''
     };
+
+    _this.handleSearchChange = function (searchValue) {
+      _this.setState({
+        searchValue: searchValue
+      });
+
+      _this.filter();
+    };
+
     return _this;
   }
 
   _createClass(UserList, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "filter",
+    value: function filter() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/user').then(function (response) {
-        _this2.state.loading = false;
+      this.state.filtered = this.state.users.filter(function (user) {
+        return user.email.toLowerCase().indexOf(_this2.state.searchValue.toLowerCase()) !== -1 || user.name.toLowerCase().indexOf(_this2.state.searchValue.toLowerCase()) !== -1;
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
 
-        _this2.setState({
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/user').then(function (response) {
+        _this3.state.loading = false;
+
+        _this3.setState({
           users: response.data
         });
       });
@@ -103748,9 +103768,15 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      this.filter();
+      var filterControl = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["ResourceList"].FilterControl, {
+        searchValue: this.state.searchValue,
+        onSearchChange: this.handleSearchChange
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["AppProvider"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["ResourceList"], {
+        filterControl: filterControl,
         loading: this.state.loading,
-        items: this.state.users,
+        items: this.state.filtered,
         renderItem: function renderItem(item) {
           var id = item.id,
               name = item.name,
@@ -103768,7 +103794,7 @@ function (_Component) {
   }]);
 
   return UserList;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 
 

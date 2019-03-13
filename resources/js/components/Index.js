@@ -9,14 +9,11 @@ export default class Index extends Component {
     render() {
         return (
             <AppProvider>
-                <Page
-                    singleColumn
-                    title="USER LIST"
-                >
+                <Page title="USER LIST" singleColumn>
                     <Layout>
                         <Layout.Section>
                             {/* <Header/> */}
-                                    <UserList/>
+                                <UserList/>
                             {/* <Footer/> */}
                         </Layout.Section>
                     </Layout>
