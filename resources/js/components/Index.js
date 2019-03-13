@@ -2,25 +2,27 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Header from './Header';
 import Footer from './Footer';
-
+import UserList from './UserList';
+import { AppProvider,Layout,Page} from '@shopify/polaris';
 export default class Index extends Component {
+    
     render() {
         return (
-            <div className="container">
-            <Header/>
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">App Component</div>
+            <AppProvider>
+                <Page
+                    singleColumn
+                    title="USER LIST"
+                >
+                    <Layout>
+                        <Layout.Section>
+                            {/* <Header/> */}
+                                    <UserList/>
+                            {/* <Footer/> */}
+                        </Layout.Section>
+                    </Layout>
+                </Page>
 
-                            <div className="card-body">
-                                I'm an example component!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <Footer/>
-            </div>
+            </AppProvider>
         );
     }
 }

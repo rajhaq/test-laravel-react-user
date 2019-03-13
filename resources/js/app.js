@@ -1,3 +1,4 @@
+import '@shopify/polaris/styles.css';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -6,7 +7,6 @@
  */
 
 require('./bootstrap');
-import '@shopify/polaris/styles.css';
 
 /**
  * Next, we will create a fresh React component instance and attach it to
